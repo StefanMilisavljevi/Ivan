@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
         </Link>
       </div>
       <div>
-        <Link to="/galery" className='className="text-xl font-bold'>
+        <Link to="/galery" className="text-xl font-bold">
           Gallery
         </Link>
       </div>

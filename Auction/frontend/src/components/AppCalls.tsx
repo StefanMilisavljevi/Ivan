@@ -29,7 +29,6 @@ const AppCalls = (props: {
   const { enqueueSnackbar } = useSnackbar()
   const { signer, activeAddress } = useWallet()
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const sender = { signer, addr: activeAddress! }
 
   const appClient = new AuctionClient(
@@ -59,7 +58,6 @@ const AppCalls = (props: {
       props.setAppID(Number(appId))
     },
     start: async () => {
-      // opt_into_asset and start_auction logic here
       setLoading(true)
 
       const assetIndex = (document.getElementById('asa') as HTMLInputElement).valueAsNumber
@@ -67,10 +65,6 @@ const AppCalls = (props: {
       const suggestedParams = await algodClient.getTransactionParams().do()
       const atc = new algosdk.AtomicTransactionComposer()
 
-      // opt_into_asset: Pay the application 0.2 ALGO
-      // MBR === Minimum Balance Requirement
-      // 0.1 ALGO for account MBR
-      // 0.1 ALGO for ASA MBR
       const payment = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
         from: activeAddress!,
         to: appAddress,
@@ -80,7 +74,6 @@ const AppCalls = (props: {
 
       atc.addTransaction({ txn: payment, signer })
 
-      // opt_into_asset: call opt_into_asset on the application
       atc.addMethodCall({
         method: appClient.appClient.getABIMethod('opt_into_asset')!,
         methodArgs: [assetIndex],
@@ -90,7 +83,6 @@ const AppCalls = (props: {
         appID: props.appID,
       })
 
-      // start auction
       const startPrice = (document.getElementById('start') as HTMLInputElement).valueAsNumber
       const length = (document.getElementById('length') as HTMLInputElement).valueAsNumber
       const assetAmount = (document.getElementById('asa-amount') as HTMLInputElement).valueAsNumber
@@ -141,8 +133,6 @@ const AppCalls = (props: {
 
       let optedIn = true
 
-      // If the account is not opted in, opt it in
-      // Otherwise, just bid
       try {
         await appClient.getLocalState(activeAddress!)
       } catch (e) {
@@ -180,7 +170,6 @@ const AppCalls = (props: {
       setLoading(false)
     },
     reclaim_bids: async () => {
-      // logic for reclaiming bids
       setLoading(true)
 
       await appClient.reclaimBids([], { sendParams: { fee: algokit.microAlgos(2000) } }).catch((e: Error) => {

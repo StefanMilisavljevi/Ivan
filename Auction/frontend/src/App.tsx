@@ -28,8 +28,7 @@ if (import.meta.env.VITE_ALGOD_NETWORK === '') {
     { id: PROVIDER_ID.PERA, clientStatic: PeraWalletConnect },
     { id: PROVIDER_ID.DAFFI, clientStatic: DaffiWalletConnect },
     { id: PROVIDER_ID.EXODUS },
-    // If you are interested in WalletConnect v2 provider
-    // refer to https://github.com/TxnLab/use-wallet for detailed integration instructions
+
   ]
 }
 
@@ -115,7 +114,7 @@ export default function App() {
               }
             />
             <Route path="/galery" element={<Galery />} />
-            {/* Add other routes as needed */}
+
           </Routes>
         </Router>
       </WalletProvider>
